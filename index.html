@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#28334A"/>
+  <title>Abastecimento — JF Brasil</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --azul:#28334A; --azul-mid:#3d4f6e; --azul-light:#e8ecf2;
+      --amarelo:#FECB00; --amarelo-dark:#c9a100;
+      --branco:#fff; --cinza-bg:#f5f6f8; --cinza-card:#fff;
+      --cinza-borda:#e2e5ea; --cinza-borda2:#d0d4db;
+      --texto:#1a2130; --texto-sec:#5a6478; --texto-ter:#8e97a8;
+      --verde:#16a34a; --verde-bg:#f0fdf4;
+      --vermelho:#dc2626; --vermelho-bg:#fef2f2;
+      --azul-info:#2563eb; --azul-info-bg:#eff6ff;
+      --radius:10px; --radius-lg:14px;
+      --shadow:0 1px 3px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+    body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--cinza-bg);color:var(--texto);font-size:15px;line-height:1.5;min-height:100vh}
+    .topbar{background:var(--azul);color:#fff;padding:0 1rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+    .topbar-left{display:flex;align-items:center;gap:10px}
+    .topbar-logo{width:32px;height:32px;background:var(--amarelo);border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .topbar-logo i{font-size:18px;color:var(--azul)}
+    .topbar-title{font-size:15px;font-weight:600;color:#fff}
+    .topbar-sub{font-size:11px;color:rgba(255,255,255,.6)}
+    .status-dot{width:8px;height:8px;border-radius:50%;background:#6ee7b7;display:inline-block;margin-right:4px}
+    .status-dot.off{background:#fca5a5}
+    .container{max-width:700px;margin:0 auto;padding:1rem}
+    .card{background:var(--cinza-card);border:1px solid var(--cinza-borda);border-radius:var(--radius-lg);padding:1.125rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+    .card-title{font-size:11px;font-weight:600;color:var(--texto-sec);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
+    .card-title i{font-size:14px;color:var(--azul)}
+    .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+    .form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+    @media(max-width:420px){.form-grid-2{grid-template-columns:1fr}.form-grid-3{grid-template-columns:1fr 1fr}}
+    .form-field{display:flex;flex-direction:column;gap:5px}
+    .form-label{font-size:12px;font-weight:500;color:var(--texto-sec)}
+    input,select{font-family:'IBM Plex Sans',sans-serif;font-size:15px;min-height:44px;padding:10px 12px;border-radius:var(--radius);border:1px solid var(--cinza-borda2);background:#fff;color:var(--texto);width:100%;appearance:none;-webkit-appearance:none;outline:none;transition:border-color .15s,box-shadow .15s}
+    input:focus,select:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(40,51,74,.12)}
+    select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6478' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+    .placa-display{display:flex;align-items:center;gap:8px;background:var(--cinza-bg);border:1px solid var(--cinza-borda2);border-radius:var(--radius);padding:10px 12px;min-height:44px;font-size:16px;font-weight:600;letter-spacing:.1em;color:var(--azul)}
+    .placa-display.empty{color:var(--texto-ter);font-size:14px;font-weight:400;letter-spacing:0}
+    .valor-display{display:flex;align-items:center;justify-content:space-between;background:var(--azul-light);border:1px solid #c8d3e8;border-radius:var(--radius);padding:10px 12px;min-height:44px}
+    .valor-num{font-size:18px;font-weight:600;color:var(--azul)}
+    .valor-hint{font-size:11px;color:var(--texto-ter)}
+    .upload-area{border:2px dashed var(--cinza-borda2);border-radius:var(--radius);padding:1.25rem 1rem;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;position:relative;transition:border-color .2s;text-align:center}
+    .upload-area.has-img{border-style:solid;border-color:var(--verde);background:var(--verde-bg)}
+    .upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    .upload-icon{font-size:30px;color:var(--texto-ter)}
+    .upload-area.has-img .upload-icon{color:var(--verde)}
+    .upload-lbl{font-size:13px;color:var(--texto-sec)}
+    .upload-area.has-img .upload-lbl{color:var(--verde);font-weight:500}
+    .upload-hint-txt{font-size:11px;color:var(--texto-ter)}
+    .upload-prev{width:100%;max-height:150px;object-fit:cover;border-radius:var(--radius);margin-top:8px;display:none}
+    .btn{width:100%;padding:12px;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;border-radius:var(--radius);border:1px solid var(--cinza-borda2);background:#fff;color:var(--texto);min-height:44px;transition:background .15s,transform .1s;display:flex;align-items:center;justify-content:center;gap:6px}
+    .btn:active{transform:scale(.97)}
+    .btn-primary{background:var(--azul);border-color:var(--azul);color:#fff}
+    .btn-danger-sm{background:none;border:none;cursor:pointer;color:var(--texto-ter);padding:4px;display:flex;align-items:center}
+    .btn-rm-foto{margin-top:8px;font-size:13px;padding:10px;display:none}
+    .msg{font-size:13px;padding:12px 14px;border-radius:var(--radius);margin-bottom:1rem;font-weight:500;display:none}
+    .msg.show{display:block}
+    .msg.ok{background:var(--verde-bg);color:var(--verde);border:1px solid #bbf7d0}
+    .msg.err{background:var(--vermelho-bg);color:var(--vermelho);border:1px solid #fecaca}
+    .msg.warn{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+    .spinner{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .offline-bar{background:#92400e;color:#fff;text-align:center;padding:8px;font-size:12px;font-weight:500;display:none}
+    .offline-bar.show{display:block}
+    .fila-badge{background:var(--amarelo);color:var(--azul);font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;margin-left:6px;display:none}
+    .fila-badge.show{display:inline}
+    .footer{text-align:center;padding:1.5rem 1rem 2rem;font-size:11px;color:var(--texto-ter)}
+    .footer strong{color:var(--azul)}
+    input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+    input[type=number]{-moz-appearance:textfield}
+
+    /* LOGIN */
+    .login-overlay{position:fixed;inset:0;background:var(--azul);z-index:99999;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+    .login-box{background:#fff;border-radius:var(--radius-lg);padding:2rem 1.5rem;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+    .login-logo{display:flex;justify-content:center;margin-bottom:1.5rem}
+    .login-logo-inner{width:56px;height:56px;background:var(--amarelo);border-radius:14px;display:flex;align-items:center;justify-content:center}
+    .login-logo-inner i{font-size:28px;color:var(--azul)}
+    .login-title{font-size:18px;font-weight:600;color:var(--azul);text-align:center;margin-bottom:4px}
+    .login-sub{font-size:13px;color:var(--texto-ter);text-align:center;margin-bottom:1.5rem}
+    .login-field{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
+    .login-label{font-size:12px;font-weight:500;color:var(--texto-sec)}
+    .login-input-wrap{position:relative}
+    .login-input-wrap input{padding-right:44px}
+    .login-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--texto-ter);padding:4px;display:flex;align-items:center}
+    .login-btn{width:100%;padding:13px;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;border-radius:var(--radius);border:none;background:var(--azul);color:#fff;transition:background .15s;min-height:48px}
+    .login-btn:active{background:var(--azul-mid)}
+    .login-err{font-size:13px;color:var(--vermelho);background:var(--vermelho-bg);border:1px solid #fecaca;border-radius:var(--radius);padding:10px 12px;margin-bottom:1rem;display:none;font-weight:500}
+    .login-err.show{display:block}
+    .login-footer{text-align:center;font-size:11px;color:var(--texto-ter);margin-top:1.25rem}
+    .login-footer strong{color:var(--azul)}
+  </style>
+</head>
+<body>
+
+
+  <!-- TELA DE LOGIN -->
+  <div class="login-overlay" id="login-overlay">
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="login-logo-inner"><i class="ti ti-car"></i></div>
+      </div>
+      <div class="login-title">Controle de Abastecimento</div>
+      <div class="login-sub">JF Brasil · Complexo Carajás</div>
+
+      <div class="login-err" id="login-err">Senha incorreta. Tente novamente.</div>
+
+      <div class="login-field">
+        <label class="login-label" for="login-senha">Senha de acesso</label>
+        <div class="login-input-wrap">
+          <input type="password" id="login-senha" placeholder="Digite a senha" autocomplete="current-password"
+            onkeydown="if(event.key==='Enter')fazerLogin()"/>
+          <button class="login-eye" onclick="toggleSenha()" tabindex="-1" type="button">
+            <i class="ti ti-eye" id="eye-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <button class="login-btn" onclick="fazerLogin()">
+        <i class="ti ti-lock-open"></i> Entrar
+      </button>
+
+      <div class="login-footer">
+        <strong>JF Brasil Engenharia</strong><br>
+        GGES / Geotecnia Operacional
+      </div>
+    </div>
+  </div>
+
+<div class="offline-bar" id="offline-bar">
+  <i class="ti ti-wifi-off"></i> Sem conexão — registro salvo localmente e enviado quando a internet voltar
+</div>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo"><i class="ti ti-car"></i></div>
+    <div>
+      <div class="topbar-title">Abastecimento</div>
+      <div class="topbar-sub">JF Brasil · Carajás</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.7)">
+    <span class="status-dot" id="status-dot"></span>
+    <span id="status-txt">verificando...</span>
+    <span class="fila-badge" id="fila-badge">0</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div id="cv-msg" class="msg"></div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-plus"></i> Novo abastecimento</div>
+
+    <div class="form-grid-2">
+      <div class="form-field"><label class="form-label" for="f-data">Data</label><input type="date" id="f-data"/></div>
+      <div class="form-field"><label class="form-label" for="f-comb">Combustível</label>
+        <select id="f-comb">
+          <option value="">Selecione...</option>
+          <option>Gasolina</option><option>Etanol</option><option>Diesel</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-field"><label class="form-label" for="f-tag">TAG</label>
+        <select id="f-tag" onchange="syncPlaca()">
+          <option value="">Selecione...</option>
+          <option>JJ29</option><option>JJ30</option><option>JJ70</option><option>JJ71</option>
+        </select>
+      </div>
+      <div class="form-field"><label class="form-label">Placa</label>
+        <div class="placa-display empty" id="f-placa-box">
+          <i class="ti ti-id"></i><span id="f-placa-txt">Selecione a TAG</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-grid-3">
+      <div class="form-field"><label class="form-label" for="f-km">KM atual</label><input type="number" id="f-km" placeholder="45820" min="0" step="1" inputmode="numeric"/></div>
+      <div class="form-field"><label class="form-label" for="f-litros">Litros</label><input type="number" id="f-litros" placeholder="48" min="0" step="0.01" inputmode="decimal" oninput="calcValor()"/></div>
+      <div class="form-field"><label class="form-label" for="f-preco">R$/L</label><input type="number" id="f-preco" placeholder="6,39" min="0" step="0.01" inputmode="decimal" oninput="calcValor()"/></div>
+    </div>
+
+    <div class="form-grid-2" style="margin-bottom:10px">
+      <div class="form-field"><label class="form-label">Valor total</label>
+        <div class="valor-display">
+          <span class="valor-num" id="f-valor-display">R$ —</span>
+          <span class="valor-hint">calculado</span>
+        </div>
+      </div>
+      <div class="form-field"><label class="form-label" for="f-cupom">Nº cupom</label><input type="number" id="f-cupom" placeholder="001234" min="0" step="1" inputmode="numeric"/></div>
+    </div>
+
+    <div class="form-field" style="margin-bottom:10px">
+      <label class="form-label" for="f-motorista">Motorista</label>
+      <select id="f-motorista">
+        <option value="">Selecione...</option>
+        <option>Bruno Lacerda Poubel Bastos</option>
+        <option>Hugo Cesar Ambrosio Pinto Paiva</option>
+        <option>Joabe Palmeiras Matos</option>
+        <option>Marcos Henrique Araujo Pires</option>
+        <option>Oziel Alves da Silva</option>
+      </select>
+    </div>
+
+    <div class="form-field" style="margin-bottom:14px">
+      <label class="form-label">Foto do cupom fiscal</label>
+      <div class="upload-area" id="upload-area" onclick="triggerUpload(event)">
+        <input type="file" id="f-foto" accept="image/*" capture="environment" onchange="onFoto(event)" onclick="event.stopPropagation()"/>
+        <i class="ti ti-camera-plus upload-icon"></i>
+        <span class="upload-lbl" id="upload-lbl">Fotografar ou escolher da galeria</span>
+        <span class="upload-hint-txt" id="upload-hint">JPG, PNG ou HEIC · máx. 10 MB</span>
+        <img id="upload-prev" class="upload-prev" alt="Prévia do cupom"/>
+      </div>
+      <button class="btn btn-rm-foto" id="btn-rm-foto" onclick="limparFoto()">
+        <i class="ti ti-x"></i> Remover foto
+      </button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button class="btn" onclick="limpar()"><i class="ti ti-x"></i> Limpar</button>
+      <button class="btn btn-primary" id="btn-registrar" onclick="registrar()">
+        <div class="spinner" id="spinner"></div>
+        <i class="ti ti-check" id="btn-icon"></i>
+        <span id="btn-txt">Registrar</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>JF Brasil Engenharia</strong> · Complexo Carajás<br>
+    Controle de Abastecimento · GGES / Geotecnia Operacional
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  //  ⚙️ CONFIGURAÇÃO — cole aqui a URL do seu Web App
+
+  // ============================================================
+  //  AUTENTICAÇÃO
+  // ============================================================
+  const SENHA_HASH = '8a35c9d7e2f4b6a1c3e5d7f9b2a4c6e8d1f3b5a7c9e2d4f6b8a1c3e5d7f9b2'; // hash visual — validação real abaixo
+  const SENHA_CORRETA = 'JF@2026';
+  const SESSION_KEY = 'jfb_auth_session';
+  const SESSION_TTL = 8 * 60 * 60 * 1000; // 8 horas em ms
+
+  function verificarSessao() {
+    try {
+      const s = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+      if (s && s.token === btoa(SENHA_CORRETA) && (Date.now() - s.ts) < SESSION_TTL) {
+        document.getElementById('login-overlay').style.display = 'none';
+        return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  function fazerLogin() {
+    const senha = document.getElementById('login-senha').value;
+    const errEl = document.getElementById('login-err');
+    if (senha === SENHA_CORRETA) {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: btoa(SENHA_CORRETA), ts: Date.now() }));
+      document.getElementById('login-overlay').style.display = 'none';
+      errEl.className = 'login-err';
+    } else {
+      errEl.className = 'login-err show';
+      document.getElementById('login-senha').value = '';
+      document.getElementById('login-senha').focus();
+      // Vibrar no celular
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    }
+  }
+
+  function toggleSenha() {
+    const inp = document.getElementById('login-senha');
+    const ico = document.getElementById('eye-icon');
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      ico.className = 'ti ti-eye-off';
+    } else {
+      inp.type = 'password';
+      ico.className = 'ti ti-eye';
+    }
+  }
+
+  verificarSessao();
+
+  // ============================================================
+  const API_URL = 'https://script.google.com/macros/s/AKfycbxAVjjFesEX81FGz7yg-D_1gfqj5TMfQwjZ2_Ick_jXAxdOcp4HIoMeKe_HIq3o_57f/exec';
+
+  // ============================================================
+  const PLACAS = {JJ29:'SIV6B53',JJ30:'RVK0J68',JJ70:'QXO5J07',JJ71:'SYT2C06'};
+  let fotoBase64 = null;
+  const FILA_KEY = 'jfb_fila_envio';
+
+  // Status de conexão
+  function verificarStatus() {
+    fetch(API_URL + '?action=ping')
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok) {
+          setStatus(true);
+          tentarEnviarFila();
+        } else { setStatus(false); }
+      })
+      .catch(() => setStatus(false));
+  }
+
+  function setStatus(online) {
+    const dot = document.getElementById('status-dot');
+    const txt = document.getElementById('status-txt');
+    const bar = document.getElementById('offline-bar');
+    dot.className = 'status-dot' + (online ? '' : ' off');
+    txt.textContent = online ? 'online' : 'offline';
+    bar.className = 'offline-bar' + (online ? '' : ' show');
+    atualizarBadgeFila();
+  }
+
+  function atualizarBadgeFila() {
+    const fila = getFila();
+    const badge = document.getElementById('fila-badge');
+    if (fila.length > 0) {
+      badge.textContent = fila.length + ' na fila';
+      badge.className = 'fila-badge show';
+    } else {
+      badge.className = 'fila-badge';
+    }
+  }
+
+  function getFila() {
+    try { return JSON.parse(localStorage.getItem(FILA_KEY) || '[]'); } catch(e) { return []; }
+  }
+  function setFila(f) { localStorage.setItem(FILA_KEY, JSON.stringify(f)); }
+
+  function tentarEnviarFila() {
+    const fila = getFila();
+    if (!fila.length) return;
+    const item = fila[0];
+    enviarParaAPI(item)
+      .then(() => {
+        const nova = getFila().slice(1);
+        setFila(nova);
+        atualizarBadgeFila();
+        if (nova.length) setTimeout(tentarEnviarFila, 2000);
+      })
+      .catch(() => {});
+  }
+
+  function enviarParaAPI(payload) {
+    return fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'registrar', ...payload })
+    }).then(r => r.json()).then(d => {
+      if (!d.ok) throw new Error(d.msg);
+      return d;
+    });
+  }
+
+  // Upload foto
+  function triggerUpload(e) { e.preventDefault(); document.getElementById('f-foto').click(); }
+  function onFoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) { showMsg('Imagem muito grande. Máx. 10 MB.', 'err'); return; }
+    const r = new FileReader();
+    r.onload = function(ev) {
+      fotoBase64 = ev.target.result;
+      document.getElementById('upload-prev').src = fotoBase64;
+      document.getElementById('upload-prev').style.display = 'block';
+      document.getElementById('upload-area').classList.add('has-img');
+      document.getElementById('upload-lbl').textContent = 'Foto do cupom anexada ✓';
+      document.getElementById('upload-hint').style.display = 'none';
+      document.getElementById('btn-rm-foto').style.display = 'flex';
+    };
+    r.readAsDataURL(file);
+  }
+  function limparFoto() {
+    fotoBase64 = null;
+    document.getElementById('f-foto').value = '';
+    document.getElementById('upload-prev').style.display = 'none';
+    document.getElementById('upload-prev').src = '';
+    document.getElementById('upload-area').classList.remove('has-img');
+    document.getElementById('upload-lbl').textContent = 'Fotografar ou escolher da galeria';
+    document.getElementById('upload-hint').style.display = 'block';
+    document.getElementById('btn-rm-foto').style.display = 'none';
+  }
+
+  function syncPlaca() {
+    const tag = document.getElementById('f-tag').value;
+    const box = document.getElementById('f-placa-box');
+    const txt = document.getElementById('f-placa-txt');
+    if (tag && PLACAS[tag]) { txt.textContent = PLACAS[tag]; box.classList.remove('empty'); }
+    else { txt.textContent = 'Selecione a TAG'; box.classList.add('empty'); }
+  }
+
+  function calcValor() {
+    const l = parseFloat(document.getElementById('f-litros').value) || 0;
+    const p = parseFloat(document.getElementById('f-preco').value) || 0;
+    const v = l * p;
+    document.getElementById('f-valor-display').textContent = v > 0 ? fBRL(v) : 'R$ —';
+  }
+
+  function fBRL(v) { return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
+
+  function showMsg(txt, tipo) {
+    const el = document.getElementById('cv-msg');
+    el.textContent = txt; el.className = 'msg show ' + tipo;
+    setTimeout(() => { el.className = 'msg'; }, 4000);
+  }
+
+  function setBtnLoading(loading) {
+    document.getElementById('spinner').style.display = loading ? 'block' : 'none';
+    document.getElementById('btn-icon').style.display = loading ? 'none' : 'inline';
+    document.getElementById('btn-txt').textContent = loading ? 'Enviando...' : 'Registrar';
+    document.getElementById('btn-registrar').disabled = loading;
+  }
+
+  async function registrar() {
+    const data      = document.getElementById('f-data').value;
+    const comb      = document.getElementById('f-comb').value;
+    const tag       = document.getElementById('f-tag').value;
+    const km        = document.getElementById('f-km').value;
+    const lit       = document.getElementById('f-litros').value;
+    const prec      = document.getElementById('f-preco').value;
+    const cupom     = document.getElementById('f-cupom').value;
+    const motorista = document.getElementById('f-motorista').value;
+
+    if (!data || !comb || !tag || !km || !lit || !prec || !motorista) {
+      showMsg('Preencha todos os campos obrigatórios.', 'err'); return;
+    }
+
+    const payload = {
+      data, combustivel: comb, tag, placa: PLACAS[tag],
+      km, litros: lit, preco: prec,
+      valor: (parseFloat(lit) * parseFloat(prec)).toFixed(2),
+      cupom: cupom || '—', motorista,
+      foto: fotoBase64 || null
+    };
+
+    setBtnLoading(true);
+
+    try {
+      const resultado = await enviarParaAPI(payload);
+      showMsg('✓ Abastecimento registrado com sucesso!', 'ok');
+      limpar();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      // Sem conexão — salvar na fila
+      const fila = getFila();
+      fila.push(payload);
+      setFila(fila);
+      atualizarBadgeFila();
+      showMsg('Sem conexão. Registro salvo e será enviado quando a internet voltar.', 'warn');
+      limpar();
+    } finally {
+      setBtnLoading(false);
+    }
+  }
+
+  function limpar() {
+    ['f-comb','f-tag','f-motorista'].forEach(id => document.getElementById(id).value = '');
+    ['f-km','f-litros','f-preco','f-cupom'].forEach(id => document.getElementById(id).value = '');
+    syncPlaca();
+    document.getElementById('f-valor-display').textContent = 'R$ —';
+    limparFoto();
+  }
+
+  // Init
+  document.getElementById('f-data').value = new Date().toISOString().split('T')[0];
+  verificarStatus();
+  setInterval(verificarStatus, 30000);
+  window.addEventListener('online', () => { setStatus(true); tentarEnviarFila(); });
+  window.addEventListener('offline', () => setStatus(false));
+</script>
+</body>
+</html>
