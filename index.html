@@ -97,6 +97,15 @@
     .login-err.show{display:block}
     .login-footer{text-align:center;font-size:11px;color:var(--texto-ter);margin-top:1.25rem}
     .login-footer strong{color:var(--azul)}
+
+    /* MODAL FILA */
+    .fila-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9998;align-items:center;justify-content:center;padding:1rem}
+    .fila-modal.open{display:flex}
+    .fila-modal-box{background:#fff;border-radius:var(--radius-lg);padding:1.5rem;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+    .fila-modal-title{font-size:16px;font-weight:600;color:var(--azul);margin-bottom:.5rem}
+    .fila-modal-sub{font-size:13px;color:var(--texto-sec);margin-bottom:1.25rem}
+    .fila-item{background:var(--cinza-bg);border:1px solid var(--cinza-borda);border-radius:var(--radius);padding:.65rem .9rem;margin-bottom:.5rem;font-size:12px;color:var(--texto-sec)}
+    .fila-item strong{color:var(--azul);display:block;margin-bottom:2px}
   </style>
 </head>
 <body>
@@ -150,7 +159,7 @@
   <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.7)">
     <span class="status-dot" id="status-dot"></span>
     <span id="status-txt">verificando...</span>
-    <span class="fila-badge" id="fila-badge">0</span>
+    <span class="fila-badge" id="fila-badge" onclick="mostrarMenuFila()" style="cursor:pointer" title="Clique para gerenciar fila">0</span>
   </div>
 </div>
 
@@ -517,12 +526,121 @@
     limparFoto();
   }
 
+  // Gerenciar fila visualmente
+  function mostrarMenuFila() {
+    const fila = getFila();
+    if (!fila.length) { showMsg('Não há registros na fila.', 'ok'); return; }
+    
+    const sub = document.getElementById('fila-modal-sub');
+    const lista = document.getElementById('fila-modal-lista');
+    sub.textContent = fila.length + ' registro(s) aguardando envio.';
+    
+    lista.innerHTML = fila.map(function(r, i) {
+      return '<div class="fila-item">' +
+        '<strong>' + (r.tag || '—') + ' · ' + (r.placa || '—') + '</strong>' +
+        (r.data || '—') + ' · ' + (r.motorista ? r.motorista.split(' ')[0] : '—') +
+        ' · ' + (r.combustivel || '—') +
+        '</div>';
+    }).join('');
+    
+    document.getElementById('fila-modal').classList.add('open');
+  }
+
+  function fecharMenuFila(e) {
+    if (!e || e.target === document.getElementById('fila-modal')) {
+      document.getElementById('fila-modal').classList.remove('open');
+    }
+  }
+
+  async function reenviarFila() {
+    const btn = document.getElementById('btn-reenviar');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    fecharMenuFila();
+    await tentarEnviarFila();
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-send"></i> Reenviar agora';
+  }
+
+  function limparFilaConfirmar() {
+    if (confirm('Descartar os ' + getFila().length + ' registro(s) da fila? Esta ação não pode ser desfeita.')) {
+      setFila([]);
+      atualizarBadgeFila();
+      fecharMenuFila();
+      showMsg('Fila limpa. Os registros foram descartados.', 'ok');
+    }
+  }
+
   // Init
   document.getElementById('f-data').value = new Date().toISOString().split('T')[0];
   verificarStatus();
   setInterval(verificarStatus, 30000);
   window.addEventListener('online', () => { setStatus(true); tentarEnviarFila(); });
   window.addEventListener('offline', () => setStatus(false));
+
+  // ============================================================
+  //  GERENCIAR FILA VISUALMENTE
+  // ============================================================
+  function mostrarMenuFila() {
+    var fila = getFila();
+    if (!fila.length) { showMsg('Não há registros na fila.', 'ok'); return; }
+    document.getElementById('fila-modal-sub').textContent = fila.length + ' registro(s) aguardando envio.';
+    document.getElementById('fila-modal-lista').innerHTML = fila.map(function(r) {
+      return '<div class="fila-item"><strong>' + (r.tag||'—') + ' · ' + (r.placa||'—') + '</strong>' +
+        (r.data||'—') + ' · ' + ((r.motorista||'').split(' ')[0]||'—') + ' · ' + (r.combustivel||'—') + '</div>';
+    }).join('');
+    document.getElementById('fila-modal').classList.add('open');
+  }
+
+  function fecharMenuFila(e) {
+    if (!e || e.target === document.getElementById('fila-modal')) {
+      document.getElementById('fila-modal').classList.remove('open');
+    }
+  }
+
+  function reenviarFila() {
+    var btn = document.getElementById('btn-reenviar');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    fecharMenuFila();
+    tentarEnviarFila();
+    setTimeout(function() {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="ti ti-send"></i> Reenviar';
+      atualizarBadgeFila();
+    }, 5000);
+  }
+
+  function limparFilaConfirmar() {
+    var n = getFila().length;
+    if (confirm('Descartar ' + n + ' registro(s) da fila? Esta ação não pode ser desfeita.')) {
+      setFila([]);
+      atualizarBadgeFila();
+      fecharMenuFila();
+      showMsg('Fila limpa. ' + n + ' registro(s) descartados.', 'ok');
+    }
+  }
+
 </script>
+
+<!-- Modal fila -->
+<div class="fila-modal" id="fila-modal" onclick="fecharMenuFila(event)">
+  <div class="fila-modal-box">
+    <div class="fila-modal-title"><i class="ti ti-clock" style="color:var(--amarelo-dark)"></i> Registros na fila</div>
+    <div class="fila-modal-sub" id="fila-modal-sub">Aguardando envio.</div>
+    <div id="fila-modal-lista"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:1rem">
+      <button class="btn" onclick="fecharMenuFila()">Fechar</button>
+      <button class="btn btn-primary" onclick="reenviarFila()" id="btn-reenviar">
+        <i class="ti ti-send"></i> Reenviar
+      </button>
+    </div>
+    <button class="btn" onclick="limparFilaConfirmar()"
+      style="margin-top:8px;font-size:13px;color:var(--vermelho);border-color:#fecaca;width:100%">
+      <i class="ti ti-trash"></i> Descartar registros da fila
+    </button>
+  </div>
+</div>
+
 </body>
 </html>
