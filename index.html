@@ -48,20 +48,34 @@
     .valor-display{display:flex;align-items:center;justify-content:space-between;background:var(--azul-light);border:1px solid #c8d3e8;border-radius:var(--radius);padding:10px 12px;min-height:44px}
     .valor-num{font-size:18px;font-weight:600;color:var(--azul)}
     .valor-hint{font-size:11px;color:var(--texto-ter)}
-    .upload-area{border:2px dashed var(--cinza-borda2);border-radius:var(--radius);padding:1.25rem 1rem;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;position:relative;transition:border-color .2s;text-align:center}
-    .upload-area.has-img{border-style:solid;border-color:var(--verde);background:var(--verde-bg)}
-    .upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-    .upload-icon{font-size:30px;color:var(--texto-ter)}
-    .upload-area.has-img .upload-icon{color:var(--verde)}
-    .upload-lbl{font-size:13px;color:var(--texto-sec)}
-    .upload-area.has-img .upload-lbl{color:var(--verde);font-weight:500}
-    .upload-hint-txt{font-size:11px;color:var(--texto-ter)}
-    .upload-prev{width:100%;max-height:150px;object-fit:cover;border-radius:var(--radius);margin-top:8px;display:none}
+
+    /* POSTO SELECTOR */
+    .posto-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+    .posto-btn{border:1.5px solid var(--cinza-borda2);border-radius:var(--radius);padding:12px 10px;background:#fff;cursor:pointer;text-align:center;transition:all .15s;font-family:'IBM Plex Sans',sans-serif}
+    .posto-btn:active{transform:scale(.97)}
+    .posto-btn.selected{border-color:var(--azul);background:var(--azul);color:#fff}
+    .posto-name{font-size:13px;font-weight:600;line-height:1.3;color:var(--texto)}
+    .posto-btn.selected .posto-name{color:#fff}
+    .posto-local{font-size:11px;color:var(--texto-ter);margin-top:2px}
+    .posto-btn.selected .posto-local{color:var(--amarelo)}
+    .posto-label-hidden{display:none}
+
+    /* FOTO — botões separados câmera / galeria */
+    .foto-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0}
+    .foto-btn{border:1px solid var(--cinza-borda2);border-radius:var(--radius);padding:11px 8px;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:500;color:var(--texto);transition:all .15s;font-family:'IBM Plex Sans',sans-serif;min-height:44px}
+    .foto-btn:active{background:var(--cinza-bg);transform:scale(.97)}
+    .foto-btn i{font-size:18px;color:var(--azul)}
+    .upload-prev{width:100%;max-height:160px;object-fit:cover;border-radius:var(--radius);margin-top:10px;display:none;border:1px solid var(--cinza-borda)}
+    .btn-rm-foto{margin-top:8px;font-size:13px;padding:10px;display:none;width:100%}
+
+    /* ALERTA DUPLICIDADE */
+    .dup-alert{display:none;align-items:flex-start;gap:8px;background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius);padding:10px 12px;font-size:13px;color:#92400e;margin-top:6px}
+    .dup-alert.show{display:flex}
+
     .btn{width:100%;padding:12px;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;border-radius:var(--radius);border:1px solid var(--cinza-borda2);background:#fff;color:var(--texto);min-height:44px;transition:background .15s,transform .1s;display:flex;align-items:center;justify-content:center;gap:6px}
     .btn:active{transform:scale(.97)}
     .btn-primary{background:var(--azul);border-color:var(--azul);color:#fff}
-    .btn-danger-sm{background:none;border:none;cursor:pointer;color:var(--texto-ter);padding:4px;display:flex;align-items:center}
-    .btn-rm-foto{margin-top:8px;font-size:13px;padding:10px;display:none}
+    .btn-rm-foto-btn{background:none;border:1px solid #fecaca;cursor:pointer;color:var(--vermelho);padding:10px;display:none;width:100%;font-family:'IBM Plex Sans',sans-serif;font-size:13px;border-radius:var(--radius);min-height:40px;display:none;align-items:center;justify-content:center;gap:6px;margin-top:8px}
     .msg{font-size:13px;padding:12px 14px;border-radius:var(--radius);margin-bottom:1rem;font-weight:500;display:none}
     .msg.show{display:block}
     .msg.ok{background:var(--verde-bg);color:var(--verde);border:1px solid #bbf7d0}
@@ -78,26 +92,6 @@
     input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     input[type=number]{-moz-appearance:textfield}
 
-    /* LOGIN */
-    .login-overlay{position:fixed;inset:0;background:var(--azul);z-index:99999;display:flex;align-items:center;justify-content:center;padding:1.5rem}
-    .login-box{background:#fff;border-radius:var(--radius-lg);padding:2rem 1.5rem;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-    .login-logo{display:flex;justify-content:center;margin-bottom:1.5rem}
-    .login-logo-inner{width:56px;height:56px;background:var(--amarelo);border-radius:14px;display:flex;align-items:center;justify-content:center}
-    .login-logo-inner i{font-size:28px;color:var(--azul)}
-    .login-title{font-size:18px;font-weight:600;color:var(--azul);text-align:center;margin-bottom:4px}
-    .login-sub{font-size:13px;color:var(--texto-ter);text-align:center;margin-bottom:1.5rem}
-    .login-field{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
-    .login-label{font-size:12px;font-weight:500;color:var(--texto-sec)}
-    .login-input-wrap{position:relative}
-    .login-input-wrap input{padding-right:44px}
-    .login-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--texto-ter);padding:4px;display:flex;align-items:center}
-    .login-btn{width:100%;padding:13px;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;border-radius:var(--radius);border:none;background:var(--azul);color:#fff;transition:background .15s;min-height:48px}
-    .login-btn:active{background:var(--azul-mid)}
-    .login-err{font-size:13px;color:var(--vermelho);background:var(--vermelho-bg);border:1px solid #fecaca;border-radius:var(--radius);padding:10px 12px;margin-bottom:1rem;display:none;font-weight:500}
-    .login-err.show{display:block}
-    .login-footer{text-align:center;font-size:11px;color:var(--texto-ter);margin-top:1.25rem}
-    .login-footer strong{color:var(--azul)}
-
     /* MODAL FILA */
     .fila-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9998;align-items:center;justify-content:center;padding:1rem}
     .fila-modal.open{display:flex}
@@ -109,40 +103,6 @@
   </style>
 </head>
 <body>
-
-
-  <!-- TELA DE LOGIN -->
-  <div class="login-overlay" id="login-overlay">
-    <div class="login-box">
-      <div class="login-logo">
-        <div class="login-logo-inner"><i class="ti ti-car"></i></div>
-      </div>
-      <div class="login-title">Controle de Abastecimento</div>
-      <div class="login-sub">JF Brasil · Complexo Carajás</div>
-
-      <div class="login-err" id="login-err">Senha incorreta. Tente novamente.</div>
-
-      <div class="login-field">
-        <label class="login-label" for="login-senha">Senha de acesso</label>
-        <div class="login-input-wrap">
-          <input type="password" id="login-senha" placeholder="Digite a senha" autocomplete="current-password"
-            onkeydown="if(event.key==='Enter')fazerLogin()"/>
-          <button class="login-eye" onclick="toggleSenha()" tabindex="-1" type="button">
-            <i class="ti ti-eye" id="eye-icon"></i>
-          </button>
-        </div>
-      </div>
-
-      <button class="login-btn" onclick="fazerLogin()">
-        <i class="ti ti-lock-open"></i> Entrar
-      </button>
-
-      <div class="login-footer">
-        <strong>JF Brasil Engenharia</strong><br>
-        GGES / Geotecnia Operacional
-      </div>
-    </div>
-  </div>
 
 <div class="offline-bar" id="offline-bar">
   <i class="ti ti-wifi-off"></i> Sem conexão — registro salvo localmente e enviado quando a internet voltar
@@ -170,9 +130,14 @@
   <div class="card">
     <div class="card-title"><i class="ti ti-plus"></i> Novo abastecimento</div>
 
+    <!-- DATA + COMBUSTÍVEL -->
     <div class="form-grid-2">
-      <div class="form-field"><label class="form-label" for="f-data">Data</label><input type="date" id="f-data"/></div>
-      <div class="form-field"><label class="form-label" for="f-comb">Combustível</label>
+      <div class="form-field">
+        <label class="form-label" for="f-data">Data</label>
+        <input type="date" id="f-data"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="f-comb">Combustível</label>
         <select id="f-comb">
           <option value="">Selecione...</option>
           <option>Gasolina</option><option>Etanol</option><option>Diesel</option>
@@ -180,36 +145,59 @@
       </div>
     </div>
 
+    <!-- TAG + PLACA -->
     <div class="form-grid-2">
-      <div class="form-field"><label class="form-label" for="f-tag">TAG</label>
+      <div class="form-field">
+        <label class="form-label" for="f-tag">TAG</label>
         <select id="f-tag" onchange="syncPlaca()">
           <option value="">Selecione...</option>
           <option>JJ29</option><option>JJ30</option><option>JJ70</option><option>JJ71</option>
         </select>
       </div>
-      <div class="form-field"><label class="form-label">Placa</label>
+      <div class="form-field">
+        <label class="form-label">Placa</label>
         <div class="placa-display empty" id="f-placa-box">
           <i class="ti ti-id"></i><span id="f-placa-txt">Selecione a TAG</span>
         </div>
       </div>
     </div>
 
+    <!-- KM + LITROS + R$/L -->
     <div class="form-grid-3">
-      <div class="form-field"><label class="form-label" for="f-km">KM atual</label><input type="number" id="f-km" placeholder="45820" min="0" step="1" inputmode="numeric"/></div>
-      <div class="form-field"><label class="form-label" for="f-litros">Litros</label><input type="number" id="f-litros" placeholder="48" min="0" step="0.01" inputmode="decimal" oninput="calcValor()"/></div>
-      <div class="form-field"><label class="form-label" for="f-preco">R$/L</label><input type="number" id="f-preco" placeholder="6,39" min="0" step="0.01" inputmode="decimal" oninput="calcValor()"/></div>
+      <div class="form-field">
+        <label class="form-label" for="f-km">KM atual</label>
+        <input type="number" id="f-km" placeholder="45820" min="0" step="1" inputmode="numeric"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="f-litros">Litros</label>
+        <input type="number" id="f-litros" placeholder="48" min="0" step="0.01" inputmode="decimal" oninput="calcValor()"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="f-preco">R$/L</label>
+        <input type="number" id="f-preco" placeholder="6,39" min="0" step="0.01" inputmode="decimal" oninput="calcValor()"/>
+      </div>
     </div>
 
+    <!-- VALOR + CUPOM -->
     <div class="form-grid-2" style="margin-bottom:10px">
-      <div class="form-field"><label class="form-label">Valor total</label>
+      <div class="form-field">
+        <label class="form-label">Valor total</label>
         <div class="valor-display">
           <span class="valor-num" id="f-valor-display">R$ —</span>
           <span class="valor-hint">calculado</span>
         </div>
       </div>
-      <div class="form-field"><label class="form-label" for="f-cupom">Nº cupom</label><input type="number" id="f-cupom" placeholder="001234" min="0" step="1" inputmode="numeric"/></div>
+      <div class="form-field">
+        <label class="form-label" for="f-cupom">Nº cupom fiscal <span style="color:var(--vermelho)">*</span></label>
+        <input type="text" id="f-cupom" placeholder="000123" inputmode="numeric" oninput="checarDuplicidade()"/>
+        <div class="dup-alert" id="dup-alert">
+          <i class="ti ti-alert-triangle" style="flex-shrink:0;margin-top:1px"></i>
+          <span>Este cupom já foi registrado. Verifique se é um lançamento duplicado.</span>
+        </div>
+      </div>
     </div>
 
+    <!-- MOTORISTA -->
     <div class="form-field" style="margin-bottom:10px">
       <label class="form-label" for="f-motorista">Motorista</label>
       <select id="f-motorista">
@@ -222,28 +210,49 @@
       </select>
     </div>
 
+    <!-- POSTO (FORNECEDOR) -->
     <div class="form-field" style="margin-bottom:14px">
-      <label class="form-label">Foto do cupom fiscal</label>
-      <div class="upload-area" id="upload-area" onclick="triggerUpload(event)">
-        <input type="file" id="f-foto" accept="image/*" capture="environment" onchange="onFoto(event)" onclick="event.stopPropagation()"/>
-        <i class="ti ti-camera-plus upload-icon"></i>
-        <span class="upload-lbl" id="upload-lbl">Fotografar ou escolher da galeria</span>
-        <span class="upload-hint-txt" id="upload-hint">JPG, PNG ou HEIC · máx. 10 MB</span>
-        <img id="upload-prev" class="upload-prev" alt="Prévia do cupom"/>
+      <label class="form-label">Posto de abastecimento <span style="color:var(--vermelho)">*</span></label>
+      <div class="posto-grid">
+        <button type="button" class="posto-btn" data-fornecedor="Posto Saldanha &amp; Camargo" onclick="selecionarPosto(this)">
+          <div class="posto-name">Posto Saldanha &amp; Camargo</div>
+          <div class="posto-local">Araguaia</div>
+        </button>
+        <button type="button" class="posto-btn" data-fornecedor="Auto Posto Carajas" onclick="selecionarPosto(this)">
+          <div class="posto-name">Auto Posto Carajás</div>
+          <div class="posto-local">Núcleo</div>
+        </button>
       </div>
-      <button class="btn btn-rm-foto" id="btn-rm-foto" onclick="limparFoto()">
+      <input type="hidden" id="f-fornecedor"/>
+    </div>
+
+    <!-- FOTO DO CUPOM — dois botões separados -->
+    <div class="form-field" style="margin-bottom:14px">
+      <label class="form-label">Foto do cupom fiscal <span style="color:var(--vermelho)">*</span></label>
+      <div class="foto-btns">
+        <button type="button" class="foto-btn" onclick="document.getElementById('f-foto-camera').click()">
+          <i class="ti ti-camera"></i> Câmera
+        </button>
+        <button type="button" class="foto-btn" onclick="document.getElementById('f-foto-galeria').click()">
+          <i class="ti ti-photo"></i> Galeria
+        </button>
+      </div>
+      <!-- câmera: capture=environment para abrir câmera traseira -->
+      <input type="file" id="f-foto-camera" accept="image/*" capture="environment" style="display:none" onchange="onFoto(event)"/>
+      <!-- galeria: sem capture para abrir seletor de arquivos -->
+      <input type="file" id="f-foto-galeria" accept="image/*" style="display:none" onchange="onFoto(event)"/>
+      <img id="upload-prev" class="upload-prev" alt="Prévia do cupom"/>
+      <button class="btn-rm-foto-btn" id="btn-rm-foto" onclick="limparFoto()">
         <i class="ti ti-x"></i> Remover foto
       </button>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <button class="btn" onclick="limpar()"><i class="ti ti-x"></i> Limpar</button>
-      <button class="btn btn-primary" id="btn-registrar" onclick="registrar()">
-        <div class="spinner" id="spinner"></div>
-        <i class="ti ti-check" id="btn-icon"></i>
-        <span id="btn-txt">Registrar</span>
-      </button>
-    </div>
+    <!-- AÇÕES -->
+    <button class="btn btn-primary" id="btn-registrar" onclick="registrar()" style="font-size:16px;font-weight:600;min-height:52px">
+      <div class="spinner" id="spinner"></div>
+      <i class="ti ti-check" id="btn-icon"></i>
+      <span id="btn-txt">Registrar</span>
+    </button>
   </div>
 
   <div class="footer">
@@ -251,377 +260,6 @@
     Controle de Abastecimento · GGES / Geotecnia Operacional
   </div>
 </div>
-
-<script>
-  // ============================================================
-  //  ⚙️ CONFIGURAÇÃO — cole aqui a URL do seu Web App
-
-  // ============================================================
-  //  AUTENTICAÇÃO
-  // ============================================================
-  const SENHA_HASH = '8a35c9d7e2f4b6a1c3e5d7f9b2a4c6e8d1f3b5a7c9e2d4f6b8a1c3e5d7f9b2'; // hash visual — validação real abaixo
-  const SENHA_CORRETA = 'JF@2026';
-  const SESSION_KEY = 'jfb_auth_session';
-  const SESSION_TTL = 8 * 60 * 60 * 1000; // 8 horas em ms
-
-  function verificarSessao() {
-    try {
-      const s = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
-      if (s && s.token === btoa(SENHA_CORRETA) && (Date.now() - s.ts) < SESSION_TTL) {
-        document.getElementById('login-overlay').style.display = 'none';
-        return true;
-      }
-    } catch(e) {}
-    return false;
-  }
-
-  function fazerLogin() {
-    const senha = document.getElementById('login-senha').value;
-    const errEl = document.getElementById('login-err');
-    if (senha === SENHA_CORRETA) {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: btoa(SENHA_CORRETA), ts: Date.now() }));
-      document.getElementById('login-overlay').style.display = 'none';
-      errEl.className = 'login-err';
-    } else {
-      errEl.className = 'login-err show';
-      document.getElementById('login-senha').value = '';
-      document.getElementById('login-senha').focus();
-      // Vibrar no celular
-      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-    }
-  }
-
-  function toggleSenha() {
-    const inp = document.getElementById('login-senha');
-    const ico = document.getElementById('eye-icon');
-    if (inp.type === 'password') {
-      inp.type = 'text';
-      ico.className = 'ti ti-eye-off';
-    } else {
-      inp.type = 'password';
-      ico.className = 'ti ti-eye';
-    }
-  }
-
-  verificarSessao();
-
-  // ============================================================
-  const API_URL = 'https://script.google.com/macros/s/AKfycbxAVjjFesEX81FGz7yg-D_1gfqj5TMfQwjZ2_Ick_jXAxdOcp4HIoMeKe_HIq3o_57f/exec';
-
-  // ============================================================
-  const PLACAS = {JJ29:'SIV6B53',JJ30:'RVK0J68',JJ70:'QXO5J07',JJ71:'SYT2C06'};
-  let fotoBase64 = null;
-  const FILA_KEY = 'jfb_fila_envio';
-
-  // Status de conexão via navigator.onLine (sem CORS)
-  function verificarStatus() {
-    const online = navigator.onLine;
-    setStatus(online);
-    if (online) tentarEnviarFila();
-  }
-
-  function setStatus(online) {
-    const dot = document.getElementById('status-dot');
-    const txt = document.getElementById('status-txt');
-    const bar = document.getElementById('offline-bar');
-    dot.className = 'status-dot' + (online ? '' : ' off');
-    txt.textContent = online ? 'online' : 'offline';
-    bar.className = 'offline-bar' + (online ? '' : ' show');
-    atualizarBadgeFila();
-  }
-
-  function atualizarBadgeFila() {
-    const fila = getFila();
-    const badge = document.getElementById('fila-badge');
-    if (fila.length > 0) {
-      badge.textContent = fila.length + ' na fila';
-      badge.className = 'fila-badge show';
-    } else {
-      badge.className = 'fila-badge';
-    }
-  }
-
-  function getFila() {
-    try { return JSON.parse(localStorage.getItem(FILA_KEY) || '[]'); } catch(e) { return []; }
-  }
-  function setFila(f) { localStorage.setItem(FILA_KEY, JSON.stringify(f)); }
-
-  function tentarEnviarFila() {
-    const fila = getFila();
-    if (!fila.length) return;
-    const item = fila[0];
-    enviarParaAPI(item)
-      .then(() => {
-        const nova = getFila().slice(1);
-        setFila(nova);
-        atualizarBadgeFila();
-        if (nova.length) setTimeout(tentarEnviarFila, 2000);
-      })
-      .catch(() => {});
-  }
-
-  // Envio via formulário oculto (único método que bypassa CORS no Apps Script)
-  function enviarParaAPI(payload) {
-    return new Promise(function(resolve, reject) {
-      // Cria iframe oculto para receber resposta
-      const iframeName = 'submit_' + Date.now();
-      const iframe = document.createElement('iframe');
-      iframe.name = iframeName;
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-
-      // Cria formulário oculto
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = API_URL;
-      form.target = iframeName;
-      form.style.display = 'none';
-
-      // Adiciona dados como campo oculto
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'payload';
-      input.value = JSON.stringify(Object.assign({ action: 'registrar' }, payload));
-      form.appendChild(input);
-
-      document.body.appendChild(form);
-
-      // Timeout de 15 segundos
-      const timer = setTimeout(function() {
-        cleanup();
-        // Considera sucesso após timeout (Apps Script pode demorar)
-        // O registro chegou mas não conseguimos confirmar
-        resolve({ ok: true, msg: 'Enviado (sem confirmação)' });
-      }, 15000);
-
-      iframe.onload = function() {
-        clearTimeout(timer);
-        cleanup();
-        resolve({ ok: true, msg: 'Registro enviado' });
-      };
-
-      iframe.onerror = function() {
-        clearTimeout(timer);
-        cleanup();
-        reject(new Error('Erro no envio'));
-      };
-
-      function cleanup() {
-        try { document.body.removeChild(form); } catch(e) {}
-        setTimeout(function() {
-          try { document.body.removeChild(iframe); } catch(e) {}
-        }, 1000);
-      }
-
-      form.submit();
-    });
-  }
-
-  // Upload foto
-  function triggerUpload(e) { e.preventDefault(); document.getElementById('f-foto').click(); }
-  function onFoto(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 10 * 1024 * 1024) { showMsg('Imagem muito grande. Máx. 10 MB.', 'err'); return; }
-    const r = new FileReader();
-    r.onload = function(ev) {
-      fotoBase64 = ev.target.result;
-      document.getElementById('upload-prev').src = fotoBase64;
-      document.getElementById('upload-prev').style.display = 'block';
-      document.getElementById('upload-area').classList.add('has-img');
-      document.getElementById('upload-lbl').textContent = 'Foto do cupom anexada ✓';
-      document.getElementById('upload-hint').style.display = 'none';
-      document.getElementById('btn-rm-foto').style.display = 'flex';
-    };
-    r.readAsDataURL(file);
-  }
-  function limparFoto() {
-    fotoBase64 = null;
-    document.getElementById('f-foto').value = '';
-    document.getElementById('upload-prev').style.display = 'none';
-    document.getElementById('upload-prev').src = '';
-    document.getElementById('upload-area').classList.remove('has-img');
-    document.getElementById('upload-lbl').textContent = 'Fotografar ou escolher da galeria';
-    document.getElementById('upload-hint').style.display = 'block';
-    document.getElementById('btn-rm-foto').style.display = 'none';
-  }
-
-  function syncPlaca() {
-    const tag = document.getElementById('f-tag').value;
-    const box = document.getElementById('f-placa-box');
-    const txt = document.getElementById('f-placa-txt');
-    if (tag && PLACAS[tag]) { txt.textContent = PLACAS[tag]; box.classList.remove('empty'); }
-    else { txt.textContent = 'Selecione a TAG'; box.classList.add('empty'); }
-  }
-
-  function calcValor() {
-    const l = parseFloat(document.getElementById('f-litros').value) || 0;
-    const p = parseFloat(document.getElementById('f-preco').value) || 0;
-    const v = l * p;
-    document.getElementById('f-valor-display').textContent = v > 0 ? fBRL(v) : 'R$ —';
-  }
-
-  function fBRL(v) { return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
-
-  function showMsg(txt, tipo) {
-    const el = document.getElementById('cv-msg');
-    el.textContent = txt; el.className = 'msg show ' + tipo;
-    setTimeout(() => { el.className = 'msg'; }, 4000);
-  }
-
-  function setBtnLoading(loading) {
-    document.getElementById('spinner').style.display = loading ? 'block' : 'none';
-    document.getElementById('btn-icon').style.display = loading ? 'none' : 'inline';
-    document.getElementById('btn-txt').textContent = loading ? 'Enviando...' : 'Registrar';
-    document.getElementById('btn-registrar').disabled = loading;
-  }
-
-  async function registrar() {
-    const data      = document.getElementById('f-data').value;
-    const comb      = document.getElementById('f-comb').value;
-    const tag       = document.getElementById('f-tag').value;
-    const km        = document.getElementById('f-km').value;
-    const lit       = document.getElementById('f-litros').value;
-    const prec      = document.getElementById('f-preco').value;
-    const cupom     = document.getElementById('f-cupom').value;
-    const motorista = document.getElementById('f-motorista').value;
-
-    if (!data || !comb || !tag || !km || !lit || !prec || !motorista) {
-      showMsg('Preencha todos os campos obrigatórios.', 'err'); return;
-    }
-
-    const payload = {
-      data, combustivel: comb, tag, placa: PLACAS[tag],
-      km, litros: lit, preco: prec,
-      valor: (parseFloat(lit) * parseFloat(prec)).toFixed(2),
-      cupom: cupom || '—', motorista,
-      foto: fotoBase64 || null
-    };
-
-    setBtnLoading(true);
-
-    try {
-      const resultado = await enviarParaAPI(payload);
-      showMsg('✓ Abastecimento registrado com sucesso!', 'ok');
-      limpar();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (err) {
-      // Sem conexão — salvar na fila
-      const fila = getFila();
-      fila.push(payload);
-      setFila(fila);
-      atualizarBadgeFila();
-      showMsg('Sem conexão. Registro salvo e será enviado quando a internet voltar.', 'warn');
-      limpar();
-    } finally {
-      setBtnLoading(false);
-    }
-  }
-
-  function limpar() {
-    ['f-comb','f-tag','f-motorista'].forEach(id => document.getElementById(id).value = '');
-    ['f-km','f-litros','f-preco','f-cupom'].forEach(id => document.getElementById(id).value = '');
-    syncPlaca();
-    document.getElementById('f-valor-display').textContent = 'R$ —';
-    limparFoto();
-  }
-
-  // Gerenciar fila visualmente
-  function mostrarMenuFila() {
-    const fila = getFila();
-    if (!fila.length) { showMsg('Não há registros na fila.', 'ok'); return; }
-    
-    const sub = document.getElementById('fila-modal-sub');
-    const lista = document.getElementById('fila-modal-lista');
-    sub.textContent = fila.length + ' registro(s) aguardando envio.';
-    
-    lista.innerHTML = fila.map(function(r, i) {
-      return '<div class="fila-item">' +
-        '<strong>' + (r.tag || '—') + ' · ' + (r.placa || '—') + '</strong>' +
-        (r.data || '—') + ' · ' + (r.motorista ? r.motorista.split(' ')[0] : '—') +
-        ' · ' + (r.combustivel || '—') +
-        '</div>';
-    }).join('');
-    
-    document.getElementById('fila-modal').classList.add('open');
-  }
-
-  function fecharMenuFila(e) {
-    if (!e || e.target === document.getElementById('fila-modal')) {
-      document.getElementById('fila-modal').classList.remove('open');
-    }
-  }
-
-  async function reenviarFila() {
-    const btn = document.getElementById('btn-reenviar');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
-    fecharMenuFila();
-    await tentarEnviarFila();
-    btn.disabled = false;
-    btn.innerHTML = '<i class="ti ti-send"></i> Reenviar agora';
-  }
-
-  function limparFilaConfirmar() {
-    if (confirm('Descartar os ' + getFila().length + ' registro(s) da fila? Esta ação não pode ser desfeita.')) {
-      setFila([]);
-      atualizarBadgeFila();
-      fecharMenuFila();
-      showMsg('Fila limpa. Os registros foram descartados.', 'ok');
-    }
-  }
-
-  // Init
-  document.getElementById('f-data').value = new Date().toISOString().split('T')[0];
-  verificarStatus();
-  setInterval(verificarStatus, 30000);
-  window.addEventListener('online', () => { setStatus(true); tentarEnviarFila(); });
-  window.addEventListener('offline', () => setStatus(false));
-
-  // ============================================================
-  //  GERENCIAR FILA VISUALMENTE
-  // ============================================================
-  function mostrarMenuFila() {
-    var fila = getFila();
-    if (!fila.length) { showMsg('Não há registros na fila.', 'ok'); return; }
-    document.getElementById('fila-modal-sub').textContent = fila.length + ' registro(s) aguardando envio.';
-    document.getElementById('fila-modal-lista').innerHTML = fila.map(function(r) {
-      return '<div class="fila-item"><strong>' + (r.tag||'—') + ' · ' + (r.placa||'—') + '</strong>' +
-        (r.data||'—') + ' · ' + ((r.motorista||'').split(' ')[0]||'—') + ' · ' + (r.combustivel||'—') + '</div>';
-    }).join('');
-    document.getElementById('fila-modal').classList.add('open');
-  }
-
-  function fecharMenuFila(e) {
-    if (!e || e.target === document.getElementById('fila-modal')) {
-      document.getElementById('fila-modal').classList.remove('open');
-    }
-  }
-
-  function reenviarFila() {
-    var btn = document.getElementById('btn-reenviar');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
-    fecharMenuFila();
-    tentarEnviarFila();
-    setTimeout(function() {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="ti ti-send"></i> Reenviar';
-      atualizarBadgeFila();
-    }, 5000);
-  }
-
-  function limparFilaConfirmar() {
-    var n = getFila().length;
-    if (confirm('Descartar ' + n + ' registro(s) da fila? Esta ação não pode ser desfeita.')) {
-      setFila([]);
-      atualizarBadgeFila();
-      fecharMenuFila();
-      showMsg('Fila limpa. ' + n + ' registro(s) descartados.', 'ok');
-    }
-  }
-
-</script>
 
 <!-- Modal fila -->
 <div class="fila-modal" id="fila-modal" onclick="fecharMenuFila(event)">
@@ -642,5 +280,305 @@
   </div>
 </div>
 
+<script>
+  // ============================================================
+  //  ⚙️ CONFIGURAÇÃO
+  // ============================================================
+  const API_URL  = 'https://script.google.com/macros/s/AKfycbxAVjjFesEX81FGz7yg-D_1gfqj5TMfQwjZ2_Ick_jXAxdOcp4HIoMeKe_HIq3o_57f/exec';
+  const SHEET_ID = '1mEQkC9lXUiP5ru3Bj0Qsahocn-pXbMWeO9dWtsTVszQ';
+  const SHEET_NM = 'Registros';
+
+  // ============================================================
+  const PLACAS   = {JJ29:'SIV6B53',JJ30:'RVK0J68',JJ70:'QXO5J07',JJ71:'SYT2C06'};
+  const FILA_KEY = 'jfb_fila_envio_v3';
+  const CUPS_KEY = 'jfb_cupons_v3';
+  let fotoBase64 = null;
+  let fornecedorSelecionado = '';
+
+  // ============================================================
+  //  POSTO
+  // ============================================================
+  function selecionarPosto(btn) {
+    document.querySelectorAll('.posto-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    fornecedorSelecionado = btn.dataset.fornecedor;
+    document.getElementById('f-fornecedor').value = fornecedorSelecionado;
+  }
+
+  // ============================================================
+  //  FOTO — dois inputs independentes
+  // ============================================================
+  function onFoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) { showMsg('Imagem muito grande. Máx. 10 MB.', 'err'); return; }
+    const r = new FileReader();
+    r.onload = function(ev) {
+      fotoBase64 = ev.target.result;
+      const prev = document.getElementById('upload-prev');
+      prev.src = fotoBase64;
+      prev.style.display = 'block';
+      const rmBtn = document.getElementById('btn-rm-foto');
+      rmBtn.style.display = 'flex';
+    };
+    r.readAsDataURL(file);
+  }
+
+  function limparFoto() {
+    fotoBase64 = null;
+    ['f-foto-camera','f-foto-galeria'].forEach(id => { document.getElementById(id).value = ''; });
+    const prev = document.getElementById('upload-prev');
+    prev.style.display = 'none'; prev.src = '';
+    document.getElementById('btn-rm-foto').style.display = 'none';
+  }
+
+  // ============================================================
+  //  DUPLICIDADE DE CUPOM
+  // ============================================================
+  function getCupons() {
+    try { return new Set(JSON.parse(localStorage.getItem(CUPS_KEY) || '[]')); }
+    catch { return new Set(); }
+  }
+  function saveCupom(c) {
+    const s = getCupons(); s.add(c.trim().toUpperCase());
+    localStorage.setItem(CUPS_KEY, JSON.stringify([...s]));
+  }
+
+  function checarDuplicidade() {
+    const val = (document.getElementById('f-cupom').value || '').trim().toUpperCase();
+    const alert = document.getElementById('dup-alert');
+    alert.classList.toggle('show', !!val && getCupons().has(val));
+  }
+
+  // Carrega cupons existentes da planilha para o cache local
+  function carregarCupons() {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NM)}&tq=select%20G`;
+    fetch(url).then(r => r.text()).then(txt => {
+      const json = JSON.parse(txt.replace(/^[^(]+\((.+)\);?\s*$/, '$1'));
+      const set = new Set();
+      (json.table?.rows || []).forEach(row => {
+        if (row.c?.[0]?.v) set.add(String(row.c[0].v).trim().toUpperCase());
+      });
+      if (set.size) localStorage.setItem(CUPS_KEY, JSON.stringify([...set]));
+    }).catch(() => {/* usa cache */});
+  }
+
+  // ============================================================
+  //  STATUS / FILA
+  // ============================================================
+  function verificarStatus() {
+    const online = navigator.onLine;
+    setStatus(online);
+    if (online) tentarEnviarFila();
+  }
+
+  function setStatus(online) {
+    document.getElementById('status-dot').className = 'status-dot' + (online ? '' : ' off');
+    document.getElementById('status-txt').textContent = online ? 'online' : 'offline';
+    document.getElementById('offline-bar').className = 'offline-bar' + (online ? '' : ' show');
+    atualizarBadgeFila();
+  }
+
+  function atualizarBadgeFila() {
+    const fila = getFila();
+    const badge = document.getElementById('fila-badge');
+    if (fila.length) { badge.textContent = fila.length + ' na fila'; badge.className = 'fila-badge show'; }
+    else { badge.className = 'fila-badge'; }
+  }
+
+  function getFila() { try { return JSON.parse(localStorage.getItem(FILA_KEY) || '[]'); } catch { return []; } }
+  function setFila(f) { localStorage.setItem(FILA_KEY, JSON.stringify(f)); }
+
+  function tentarEnviarFila() {
+    const fila = getFila();
+    if (!fila.length) return;
+    enviarParaAPI(fila[0]).then(() => {
+      const nova = getFila().slice(1);
+      setFila(nova);
+      atualizarBadgeFila();
+      if (nova.length) setTimeout(tentarEnviarFila, 2000);
+    }).catch(() => {});
+  }
+
+  // ============================================================
+  //  ENVIO (iframe + form oculto — bypass CORS)
+  // ============================================================
+  function enviarParaAPI(payload) {
+    return new Promise(function(resolve, reject) {
+      const iframeName = 'submit_' + Date.now();
+      const iframe = document.createElement('iframe');
+      iframe.name = iframeName;
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      const form = document.createElement('form');
+      form.method = 'POST'; form.action = API_URL; form.target = iframeName; form.style.display = 'none';
+      const input = document.createElement('input');
+      input.type = 'hidden'; input.name = 'payload';
+      input.value = JSON.stringify(Object.assign({ action:'registrar' }, payload));
+      form.appendChild(input);
+      document.body.appendChild(form);
+
+      const timer = setTimeout(function() { cleanup(); resolve({ ok:true }); }, 15000);
+      iframe.onload  = function() { clearTimeout(timer); cleanup(); resolve({ ok:true }); };
+      iframe.onerror = function() { clearTimeout(timer); cleanup(); reject(); };
+
+      function cleanup() {
+        try { document.body.removeChild(form); } catch {}
+        setTimeout(function() { try { document.body.removeChild(iframe); } catch {} }, 1000);
+      }
+      form.submit();
+    });
+  }
+
+  // ============================================================
+  //  FORM HELPERS
+  // ============================================================
+  function syncPlaca() {
+    const tag = document.getElementById('f-tag').value;
+    const box = document.getElementById('f-placa-box');
+    const txt = document.getElementById('f-placa-txt');
+    if (tag && PLACAS[tag]) { txt.textContent = PLACAS[tag]; box.classList.remove('empty'); }
+    else { txt.textContent = 'Selecione a TAG'; box.classList.add('empty'); }
+  }
+
+  function calcValor() {
+    const l = parseFloat(document.getElementById('f-litros').value) || 0;
+    const p = parseFloat(document.getElementById('f-preco').value) || 0;
+    const v = l * p;
+    document.getElementById('f-valor-display').textContent = v > 0
+      ? v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}) : 'R$ —';
+  }
+
+  function showMsg(txt, tipo) {
+    const el = document.getElementById('cv-msg');
+    el.textContent = txt; el.className = 'msg show ' + tipo;
+    setTimeout(() => { el.className = 'msg'; }, 4500);
+  }
+
+  function setBtnLoading(loading) {
+    document.getElementById('spinner').style.display = loading ? 'block' : 'none';
+    document.getElementById('btn-icon').style.display = loading ? 'none' : 'inline';
+    document.getElementById('btn-txt').textContent = loading ? 'Enviando...' : 'Registrar';
+    document.getElementById('btn-registrar').disabled = loading;
+  }
+
+  // ============================================================
+  //  REGISTRAR
+  // ============================================================
+  async function registrar() {
+    const data      = document.getElementById('f-data').value;
+    const comb      = document.getElementById('f-comb').value;
+    const tag       = document.getElementById('f-tag').value;
+    const km        = document.getElementById('f-km').value;
+    const lit       = document.getElementById('f-litros').value;
+    const prec      = document.getElementById('f-preco').value;
+    const cupom     = (document.getElementById('f-cupom').value || '').trim();
+    const motorista = document.getElementById('f-motorista').value;
+    const fornecedor = fornecedorSelecionado;
+
+    if (!data || !comb || !tag || !km || !lit || !prec || !motorista) {
+      showMsg('Preencha todos os campos obrigatórios.', 'err'); return;
+    }
+    if (!cupom) { showMsg('Informe o número do cupom fiscal.', 'err'); document.getElementById('f-cupom').focus(); return; }
+    if (!fornecedor) { showMsg('Selecione o posto de abastecimento.', 'err'); return; }
+    if (!fotoBase64) { showMsg('Anexe a foto do cupom fiscal para continuar.', 'err'); return; }
+
+    // Verificação final de duplicidade
+    if (getCupons().has(cupom.toUpperCase())) {
+      if (!confirm(`O cupom "${cupom}" já consta nos registros.\nDeseja registrar mesmo assim?`)) return;
+    }
+
+    const payload = {
+      data, combustivel: comb, tag, placa: PLACAS[tag],
+      km, litros: lit, preco: prec,
+      valor: (parseFloat(lit) * parseFloat(prec)).toFixed(2),
+      cupom, fornecedor, motorista,
+      foto: fotoBase64 || null
+    };
+
+    setBtnLoading(true);
+
+    if (!navigator.onLine) {
+      const fila = getFila(); fila.push(payload); setFila(fila);
+      saveCupom(cupom);
+      atualizarBadgeFila();
+      showMsg('Sem conexão. Registro salvo e será enviado quando a internet voltar.', 'warn');
+      limpar(); setBtnLoading(false); return;
+    }
+
+    try {
+      await enviarParaAPI(payload);
+      saveCupom(cupom);
+      showMsg('✓ Abastecimento registrado com sucesso!', 'ok');
+      limpar();
+      window.scrollTo({ top:0, behavior:'smooth' });
+    } catch {
+      const fila = getFila(); fila.push(payload); setFila(fila);
+      saveCupom(cupom);
+      atualizarBadgeFila();
+      showMsg('Sem conexão. Registro salvo e será enviado quando a internet voltar.', 'warn');
+      limpar();
+    } finally {
+      setBtnLoading(false);
+    }
+  }
+
+  function limpar() {
+    ['f-comb','f-tag','f-motorista'].forEach(id => { document.getElementById(id).value = ''; });
+    ['f-km','f-litros','f-preco','f-cupom'].forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('f-valor-display').textContent = 'R$ —';
+    document.querySelectorAll('.posto-btn').forEach(b => b.classList.remove('selected'));
+    fornecedorSelecionado = '';
+    document.getElementById('f-fornecedor').value = '';
+    document.getElementById('dup-alert').classList.remove('show');
+    syncPlaca();
+    limparFoto();
+  }
+
+  // ============================================================
+  //  FILA MODAL
+  // ============================================================
+  function mostrarMenuFila() {
+    const fila = getFila();
+    if (!fila.length) { showMsg('Não há registros na fila.', 'ok'); return; }
+    document.getElementById('fila-modal-sub').textContent = fila.length + ' registro(s) aguardando envio.';
+    document.getElementById('fila-modal-lista').innerHTML = fila.map(r =>
+      `<div class="fila-item"><strong>${r.tag||'—'} · ${r.placa||'—'}</strong>${r.data||'—'} · ${(r.motorista||'').split(' ')[0]||'—'} · ${r.combustivel||'—'}</div>`
+    ).join('');
+    document.getElementById('fila-modal').classList.add('open');
+  }
+
+  function fecharMenuFila(e) {
+    if (!e || e.target === document.getElementById('fila-modal'))
+      document.getElementById('fila-modal').classList.remove('open');
+  }
+
+  function reenviarFila() {
+    const btn = document.getElementById('btn-reenviar');
+    btn.disabled = true; btn.textContent = 'Enviando...';
+    fecharMenuFila();
+    tentarEnviarFila();
+    setTimeout(() => { btn.disabled = false; btn.innerHTML = '<i class="ti ti-send"></i> Reenviar'; atualizarBadgeFila(); }, 5000);
+  }
+
+  function limparFilaConfirmar() {
+    const n = getFila().length;
+    if (confirm(`Descartar ${n} registro(s) da fila? Esta ação não pode ser desfeita.`)) {
+      setFila([]); atualizarBadgeFila(); fecharMenuFila();
+      showMsg(`Fila limpa. ${n} registro(s) descartados.`, 'ok');
+    }
+  }
+
+  // ============================================================
+  //  INIT
+  // ============================================================
+  document.getElementById('f-data').value = new Date().toISOString().split('T')[0];
+  verificarStatus();
+  setInterval(verificarStatus, 30000);
+  window.addEventListener('online',  () => { setStatus(true);  tentarEnviarFila(); });
+  window.addEventListener('offline', () => { setStatus(false); });
+  carregarCupons();
+</script>
 </body>
 </html>
