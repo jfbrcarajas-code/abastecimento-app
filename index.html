@@ -57,8 +57,12 @@
     .valor-display{display:flex;align-items:center;justify-content:space-between;background:var(--azul-light);border:1px solid #c8d3e8;border-radius:var(--radius);padding:10px 12px;min-height:44px}
     .valor-num{font-size:18px;font-weight:600;color:var(--azul)}
     .valor-hint{font-size:11px;color:var(--texto-ter)}
-    /* POSTO SELECTOR */
-    .posto-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+    /* POSTO SELECTOR — 3 postos */
+    .posto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px}
+    @media(max-width:420px){
+      .posto-grid{grid-template-columns:1fr 1fr}
+      .posto-grid .posto-btn:last-child{grid-column:1 / -1}
+    }
     .posto-btn{border:1.5px solid var(--cinza-borda2);border-radius:var(--radius);padding:12px 10px;background:#fff;cursor:pointer;text-align:center;transition:all .15s;font-family:'IBM Plex Sans',sans-serif}
     .posto-btn:active{transform:scale(.97)}
     .posto-btn.selected{border-color:var(--azul);background:var(--azul)}
@@ -167,6 +171,7 @@
           <option>JJ70</option>
           <option>JJ70A</option>
           <option>JJ71</option>
+          <option>JFB0A45</option>
         </select>
       </div>
       <div class="form-field">
@@ -224,20 +229,26 @@
         <option>Romualdop Pereira Saturnino Odorio</option>
       </select>
     </div>
-    <!-- POSTO (FORNECEDOR) -->
+    <!-- POSTO (FORNECEDOR) — define CIDADE e UF automaticamente -->
     <div class="form-field" style="margin-bottom:14px">
       <label class="form-label">Posto de abastecimento <span style="color:var(--vermelho)">*</span></label>
       <div class="posto-grid">
-        <button type="button" class="posto-btn" data-fornecedor="Posto Saldanha &amp; Camargo" onclick="selecionarPosto(this)">
+        <button type="button" class="posto-btn" data-fornecedor="Posto Saldanha &amp; Camargo" data-cidade="Parauapebas" data-uf="PA" onclick="selecionarPosto(this)">
           <div class="posto-name">Posto Saldanha &amp; Camargo</div>
           <div class="posto-local">Araguaia</div>
         </button>
-        <button type="button" class="posto-btn" data-fornecedor="Auto Posto Carajás" onclick="selecionarPosto(this)">
+        <button type="button" class="posto-btn" data-fornecedor="Auto Posto Carajás" data-cidade="Parauapebas" data-uf="PA" onclick="selecionarPosto(this)">
           <div class="posto-name">Auto Posto Carajás</div>
           <div class="posto-local">Núcleo</div>
         </button>
+        <button type="button" class="posto-btn" data-fornecedor="Elias e Guimarães" data-cidade="Mariana" data-uf="MG" onclick="selecionarPosto(this)">
+          <div class="posto-name">Elias e Guimarães</div>
+          <div class="posto-local">Mariana/MG</div>
+        </button>
       </div>
       <input type="hidden" id="f-fornecedor"/>
+      <input type="hidden" id="f-cidade"/>
+      <input type="hidden" id="f-uf"/>
     </div>
     <!-- FOTO DO CUPOM — Câmera e Galeria separados -->
     <div class="form-field" style="margin-bottom:14px">
@@ -317,20 +328,26 @@
 const API_URL  = 'https://script.google.com/macros/s/AKfycbxGGyQlyqO4vhtVvhgG5NYtCx7hF_Y3Gj7iCPoVyclgNsq7_w-X58Y071d6bM9ILXyO/exec';
 const SHEET_ID = '1mEQkC9lXUiP5ru3Bj0Qsahocn-pXbMWeO9dWtsTVszQ';
 const SHEET_NM = 'Registros';
-const PLACAS   = { JJ29:'SIV6B53', JJ30:'RVK0J68', JJ70:'QXO5J07', JJ70A:'TDW1C39', JJ71:'SYT2C06' };
+const PLACAS   = { JJ29:'SIV6B53', JJ30:'RVK0J68', JJ70:'QXO5J07', JJ70A:'TDW1C39', JJ71:'SYT2C06', JFB0A45:'TDA0A45' };
 const FILA_KEY = 'jfb_fila_envio_v3';
 const CUPS_KEY = 'jfb_cupons_v3';
 let fotoBase64 = null;
 let fornecedorSelecionado = '';
+let cidadeSelecionada = '';
+let ufSelecionada = '';
 let payloadPendente = null; // usado na confirmação de duplicidade
 // ================================================================
-//  POSTO
+//  POSTO — define FORNECEDOR, CIDADE e UF
 // ================================================================
 function selecionarPosto(btn) {
   document.querySelectorAll('.posto-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   fornecedorSelecionado = btn.dataset.fornecedor;
+  cidadeSelecionada     = btn.dataset.cidade;
+  ufSelecionada         = btn.dataset.uf;
   document.getElementById('f-fornecedor').value = fornecedorSelecionado;
+  document.getElementById('f-cidade').value     = cidadeSelecionada;
+  document.getElementById('f-uf').value         = ufSelecionada;
 }
 // ================================================================
 //  FOTO — câmera e galeria com inputs independentes
@@ -386,8 +403,8 @@ function checarDuplicidade() {
   document.getElementById('dup-alert').classList.toggle('show', !!val && getCupons().has(val));
 }
 // Carrega cupons existentes da planilha → coluna G (índice 6)
-// ATENÇÃO: se você inseriu a coluna FORNECEDOR após a URL na planilha,
-// ajuste o select abaixo conforme a nova posição do cupom.
+// ATENÇÃO: se você inseriu colunas (FORNECEDOR, CIDADE, UF) antes do cupom
+// na planilha, ajuste a letra no "select G" abaixo para a nova posição do cupom.
 function carregarCupons() {
   const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NM)}&tq=select%20G`;
   fetch(url).then(r => r.text()).then(txt => {
@@ -527,6 +544,8 @@ async function registrar() {
   const cupom      = (document.getElementById('f-cupom').value || '').trim();
   const motorista  = document.getElementById('f-motorista').value;
   const fornecedor = fornecedorSelecionado;
+  const cidade     = cidadeSelecionada;
+  const uf         = ufSelecionada;
   // Validações
   if (!data || !comb || !tag || !km || !lit || !prec || !motorista) {
     showMsg('Preencha todos os campos obrigatórios.', 'err'); return;
@@ -535,7 +554,7 @@ async function registrar() {
     showMsg('Informe o número do cupom fiscal.', 'err');
     document.getElementById('f-cupom').focus(); return;
   }
-  if (!fornecedor) {
+  if (!fornecedor || !cidade || !uf) {
     showMsg('Selecione o posto de abastecimento.', 'err'); return;
   }
   if (!fotoBase64) {
@@ -552,6 +571,8 @@ async function registrar() {
     valor       : (parseFloat(lit) * parseFloat(prec)).toFixed(2),
     cupom,
     fornecedor,
+    cidade,
+    uf,
     motorista,
     foto        : fotoBase64
   };
@@ -595,7 +616,11 @@ function limpar() {
   document.getElementById('f-valor-display').textContent = 'R$ —';
   document.querySelectorAll('.posto-btn').forEach(b => b.classList.remove('selected'));
   fornecedorSelecionado = '';
+  cidadeSelecionada = '';
+  ufSelecionada = '';
   document.getElementById('f-fornecedor').value = '';
+  document.getElementById('f-cidade').value = '';
+  document.getElementById('f-uf').value = '';
   document.getElementById('dup-alert').classList.remove('show');
   syncPlaca();
   limparFoto();
@@ -608,7 +633,7 @@ function mostrarMenuFila() {
   if (!fila.length) { showMsg('Não há registros na fila.', 'ok'); return; }
   document.getElementById('fila-modal-sub').textContent = fila.length + ' registro(s) aguardando envio.';
   document.getElementById('fila-modal-lista').innerHTML = fila.map(r =>
-    `<div class="fila-item"><strong>${r.tag||'—'} · ${r.placa||'—'}</strong>${r.data||'—'} · ${(r.motorista||'').split(' ')[0]||'—'} · ${r.combustivel||'—'} · ${r.fornecedor||'—'}</div>`
+    `<div class="fila-item"><strong>${r.tag||'—'} · ${r.placa||'—'}</strong>${r.data||'—'} · ${(r.motorista||'').split(' ')[0]||'—'} · ${r.combustivel||'—'} · ${r.fornecedor||'—'} · ${r.cidade||'—'}/${r.uf||'—'}</div>`
   ).join('');
   document.getElementById('fila-modal').classList.add('open');
 }
